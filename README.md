@@ -1,91 +1,204 @@
 # 📱 AnimeVerse – Discover Anime Anytime, Anywhere
 
 AnimeVerse is a modern Flutter application designed to help users explore anime titles, read detailed synopses, and save their favorite shows.
-This project is still under development and currently integrates directly with the Jikan API, with plans to implement a dedicated backend service in future releases.
+This project is currently under development and integrates directly with the Jikan API, with plans to implement a dedicated backend service in future releases.
 
 ## 🌟 Key Features
+
 🔍 Anime Search
+Search anime titles instantly using Jikan API keyword-based queries.
 
-Search anime titles instantly using keyword-based queries powered by the Jikan API.
+📚 Detailed Anime Information
+View complete details such as synopsis, type, episodes, release year, and more.
 
-📚 Anime Details & Synopsis
-
-View complete details of each anime, including synopsis, type, episodes, release year, and more.
-
-❤️ Favorite Screen
-
-Save anime to your personal favorites list for easy access anytime.
+❤️ Favorites Screen
+Save and manage your favorite anime list with ease.
 
 ♾️ Infinite Scroll
+Load anime data seamlessly as you scroll.
 
-Load anime lists seamlessly as you scroll.
-
-⏳ Loading, Error, and Empty State
-
-Clean and responsive UI states to enhance user experience during data fetching.
-
-📱 Responsive UI Design
-
-Fully built with Flutter, ensuring optimal display across different screen sizes and devices.
+⏳ Smart UI States
+Clean loading, error, and empty states for better user experience.
 
 ## 🧩 Tech Stack
-| Component   | Technology Used |
-| ----------- |-----------------|
-| Framework   | Flutter         |
-| Language    | Dart            |
-| API Source  | Jikan API       |
-| State Mgmt  | Provider        |
-| HTTP Client | `http` package  |
+
+Framework: Flutter
+
+Language: Dart
+
+API Source: Jikan API
+
+State Management: Provider
+
+HTTP Client: http package
 
 ## 📦 Installation
-
-1. Clone the repository:
-
 git clone https://github.com/susanjong/anime_verse.git
 
-
-Navigate into the project:
+Do 3 steps in here, run into terminal
 
 cd anime_verse
 
-
-Install dependencies:
-
 flutter pub get
-
-
-Run the application:
 
 flutter run
 
 📡 API Integration (Temporary)
 
-AnimeVerse uses Jikan REST API as a temporary data source while backend development is in progress.
+AnimeVerse temporarily uses the Jikan REST API as its main data source until the backend service is completed.
 API Reference: https://api.jikan.moe/v4/
 
 Example request:
 
 GET https://api.jikan.moe/v4/anime?q=naruto
 
-📁 Project Structure
+## 📁 Project Structure
+
 lib/
+
 ├── config/
+
 ├── providers/
+
 ├── repositories/
+
 ├── models/
+
 ├── services/
+
 ├── screens/
-│     ├── home/
-│     ├── detail/
-│     └── favorites/
+
+│ ├── home/
+
+│ ├── detail/
+
+│ └── favorites/
+
 ├── widgets/
+
 └── main.dart
 
-### 🤝 Contributing
+## 🔥 Firebase Setup (Required)
 
-Contributions, suggestions, and improvements are welcome.
-Please open an issue or submit a pull request.
+To enable authentication and future backend features, Firebase must be configured in your local project.
 
-### 📄 License
+1️⃣ Create a Firebase Project
 
-This project is licensed under the MIT License.
+Go to Firebase Console
+https://console.firebase.google.com
+
+Click Add Project → enter your project name → continue.
+
+Wait for the project to be created.
+
+2️⃣ Add an Android App to Firebase
+
+In Firebase Console, open your project → Project Overview → Add App → select Android.
+
+Enter the following values:
+
+Android package name:
+
+com.example.anime_verse
+
+
+App nickname (optional)
+
+SHA-1 (optional but recommended)
+
+Download the generated file:
+
+google-services.json
+
+Place it into your Flutter project at:
+
+android/app/google-services.json
+
+3️⃣ Enable Firebase Authentication
+
+Go to Build → Authentication.
+
+Select Get Started.
+
+Enable Email/Password sign-in method.
+
+4️⃣ Add Firebase SDK to Flutter
+
+Run this in your terminal:
+
+flutter pub add firebase_core
+flutter pub add firebase_auth
+
+5️⃣ Install FlutterFire CLI (if not installed)
+dart pub global activate flutterfire_cli
+
+6️⃣ Configure Firebase Automatically
+
+Run the FlutterFire setup from the root folder of your project:
+
+flutterfire configure
+
+
+This command will auto-generate the file:
+
+lib/firebase_options.dart
+
+
+and link your Android app to Firebase.
+
+7️⃣ Initialize Firebase in main.dart
+
+Add and copy this to your code:
+
+import 'package:firebase_core/firebase_core.dart';
+
+import 'firebase_options.dart';
+
+void main() async {
+
+WidgetsFlutterBinding.ensureInitialized();
+
+await Firebase.initializeApp(
+
+    options: DefaultFirebaseOptions.currentPlatform,
+
+);
+
+runApp(const MyApp());
+
+}
+
+8️⃣ Add Google Services Plugin (Android)
+
+Confirm your android/app/build.gradle contains:
+
+apply plugin: 'com.google.gms.google-services'
+
+
+And in android/build.gradle:
+
+classpath 'com.google.gms:google-services:4.4.2'
+
+9️⃣ Clean & Run the Project in terminal
+
+flutter clean
+
+flutter pub get
+
+flutter run
+
+
+## 📄 License – MIT License (Attribution Required)
+
+Copyright (c) 2025 Susaan Jong
+GitHub: https://github.com/susanjong
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software with the following conditions:
+
+Proper credit to the original author (GitHub: `susanjong) is required.`
+
+Reuploading, redistributing, or claiming this work as your own without attribution is strictly prohibited.
+
+Copies or substantial portions of the software must include this license notice.
