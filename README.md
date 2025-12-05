@@ -125,6 +125,10 @@ lib/
 
 ![img_5.png](assets/images/img_5.png)
 
+6. Forgot Password - Do reset your password in here with using password reset link send into via your gmail account registered in this account
+
+![img.png](img.png)
+
 ## Link Demo Application
 https://youtu.be/8gOzXb8fv4Q go check now!
 
@@ -147,20 +151,19 @@ In Firebase Console, open your project → Project Overview → Add App → sele
 
 Enter the following values:
 
-Android package name:
+1. Android package name:
 
-com.example.anime_verse
+`com.example.anime_verse`
 
+2. App nickname (optional)
 
-App nickname (optional)
-
-SHA-1 (optional but recommended)
+3. SHA-1 and SH-256 (required)
 
 Download the generated file:
 
 google-services.json
 
-Place it into your Flutter project at:
+4. Place it into your Flutter project at:
 
 android/app/google-services.json
 
@@ -208,7 +211,7 @@ WidgetsFlutterBinding.ensureInitialized();
 
 await Firebase.initializeApp(
 
-    options: DefaultFirebaseOptions.currentPlatform,
+options: DefaultFirebaseOptions.currentPlatform,
 
 );
 
