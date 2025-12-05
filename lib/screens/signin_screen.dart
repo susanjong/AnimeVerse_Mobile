@@ -69,7 +69,7 @@ class _SignInScreenState extends State<SignInScreen> {
     // Handle result
     if (success) {
       if (mounted) {
-        SnackbarHelper.showSuccess(context, 'Sign in succesfull!');
+        SnackbarHelper.showSuccess(context, 'Sign in successful!');
         context.go(AppRoutes.home);
       }
     } else {
@@ -93,72 +93,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if (success) {
       if (mounted) {
-        SnackbarHelper.showSuccess(context, 'Google Sign-In succesfull!');
+        SnackbarHelper.showSuccess(context, 'Google Sign-In successful!');
         context.go(AppRoutes.home);
       }
     } else {
       if (mounted) {
         final errorMessage = authProvider.errorMessage ?? 'Google Sign-In failed';
-        SnackbarHelper.showError(context, errorMessage);
-      }
-    }
-  }
-
-  /// Handle Forgot Password
-  Future<void> _handleForgotPassword() async {
-    final email = _emailController.text.trim();
-
-    if (email.isEmpty) {
-      SnackbarHelper.showError(context, 'Enter your email first!');
-      return;
-    }
-
-    final emailError = Validators.validateEmail(email);
-    if (emailError != null) {
-      SnackbarHelper.showError(context, emailError);
-      return;
-    }
-
-    // Show confirmation dialog
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Reset Password'),
-        content: Text('Send email password into $email?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Send'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != true) return;
-
-    setState(() => _isLoading = true);
-
-    final authProvider = context.read<AuthProvider>();
-    final success = await authProvider.sendPasswordResetEmail(email);
-
-    if (mounted) {
-      setState(() => _isLoading = false);
-    }
-
-    if (success) {
-      if (mounted) {
-        SnackbarHelper.showSuccess(
-          context,
-          'Email password already sent!',
-        );
-      }
-    } else {
-      if (mounted) {
-        final errorMessage = authProvider.errorMessage ?? 'Failed sending email';
         SnackbarHelper.showError(context, errorMessage);
       }
     }
@@ -298,11 +238,13 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     SizedBox(height: screenHeight * 0.01),
 
-                    // Forgot Password
+                    // Forgot Password - UPDATED: Navigate to ForgotPasswordScreen
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: _isLoading ? null : _handleForgotPassword,
+                        onPressed: _isLoading
+                            ? null
+                            : () => context.push(AppRoutes.forgotPassword),
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(

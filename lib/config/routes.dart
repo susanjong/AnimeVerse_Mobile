@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/detail_screen.dart';
 import '../screens/favorite_screen.dart';
+import '../screens/forgot_password.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/signin_screen.dart';
@@ -13,6 +14,7 @@ import '../widgets/bottom_navigation_shell.dart';
 class AppRoutes {
   static const String signIn = '/sign-in';
   static const String signUp = '/sign-up';
+  static const String forgotPassword = '/forgot-password'; // TAMBAHKAN INI
   static const String home = '/home';
   static const String favorites = '/favorites';
   static const String profile = '/profile';
@@ -29,9 +31,11 @@ GoRouter createRouter() {
     redirect: (context, state) {
       final user = FirebaseAuth.instance.currentUser;
       final isAuthenticated = user != null;
-      final isAuthRoute =
-          state.matchedLocation == AppRoutes.signIn ||
-              state.matchedLocation == AppRoutes.signUp;
+
+      // UPDATE: Tambahkan forgotPassword sebagai auth route
+      final isAuthRoute = state.matchedLocation == AppRoutes.signIn ||
+          state.matchedLocation == AppRoutes.signUp ||
+          state.matchedLocation == AppRoutes.forgotPassword;
 
       if (!isAuthenticated && !isAuthRoute) {
         return AppRoutes.signIn;
@@ -44,8 +48,8 @@ GoRouter createRouter() {
       return null;
     },
     refreshListenable: AuthStateNotifier(),
-
     routes: [
+      // Auth Routes
       GoRoute(
         path: AppRoutes.signIn,
         name: 'sign-in',
@@ -57,6 +61,14 @@ GoRouter createRouter() {
         builder: (context, state) => const SignUpScreen(),
       ),
 
+      // TAMBAHKAN ROUTE INI
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        name: 'forgot-password',
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+
+      // Detail Screen (Outside of Bottom Navigation)
       GoRoute(
         path: '${AppRoutes.details}/:id',
         name: 'detail',
@@ -67,6 +79,7 @@ GoRouter createRouter() {
         },
       ),
 
+      // Bottom Navigation Routes
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return BottomNavigationShell(navigationShell: navigationShell);
