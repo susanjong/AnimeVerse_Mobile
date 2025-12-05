@@ -10,7 +10,7 @@ class Anime {
   final String? type;
   final int? year;
   final String? status;
-  final String? ageRating; // Age rating (G, PG, PG-13, R, etc.)
+  final String? ageRating;
 
   const Anime({
     required this.malId,
@@ -27,9 +27,7 @@ class Anime {
     this.ageRating,
   });
 
-  /// Factory constructor to create Anime from Jikan API JSON
   factory Anime.fromJson(Map<String, dynamic> json) {
-    // Extract genres from array
     List<String> genreList = [];
     if (json['genres'] != null) {
       genreList = (json['genres'] as List)
@@ -53,7 +51,6 @@ class Anime {
     );
   }
 
-  /// Convert Anime to JSON (for favorites persistence)
   Map<String, dynamic> toJson() {
     return {
       'mal_id': malId,
@@ -71,7 +68,6 @@ class Anime {
     };
   }
 
-  /// Create Anime from favorites JSON (backwards compatibility)
   factory Anime.fromFavoritesJson(Map<String, dynamic> json) {
     return Anime(
       malId: json['mal_id'] as int,
@@ -89,18 +85,13 @@ class Anime {
     );
   }
 
-  /// Helper method to check if content is appropriate for educational context
-  /// Returns true if content meets safety guidelines
   bool get isAppropriateContent {
-    // Check age rating - filter out inappropriate content silently
-    // Rx prefix indicates restricted content
     if (ageRating != null && ageRating!.startsWith('Rx')) {
       return false;
     }
     return true;
   }
 
-  // Helper getters for backwards compatibility
   String get id => malId.toString();
   String get imagePath => imageUrl ?? '';
   String get genre => genres.join(', ');
