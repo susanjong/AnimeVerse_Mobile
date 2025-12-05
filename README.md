@@ -1,11 +1,28 @@
 ### About Me 
 Name: Susan Jong 
+
 NIM: 231401014
 
 # 📱 AnimeVerse – Discover Anime Anytime, Anywhere
 
 AnimeVerse is a modern Flutter application designed to help users explore anime titles, read detailed synopses, and save their favorite shows.
 This project is currently under development and integrates directly with the Jikan API, with plans to implement a dedicated backend service in future releases.
+
+## 📱 AnimeVerse – Check the Latest Release
+
+Welcome to the AnimeVerse repository!
+
+You can always download the newest version of the app directly from the Releases section.
+
+🔽 Download APK (Latest Release)
+
+To install AnimeVerse on your android device, check the new release and search file name and download the file below:
+
+[👉 apk-release.apk](https://github.com/susanjong/AnimeVerse_Mobile/releases/tag/v1.0.0)
+
+(Click to download and install on your android phone)
+
+Minimum Android version: Android 5.0 (API 21) or higher.
 
 ## 🌟 Key Features
 
@@ -86,23 +103,30 @@ lib/
 
 ## Application Screenshoot 
 1. Splash screen
-![img.png](img.png)
+
+![img.png](assets/images/img.png)
 
 2. Sign In dan Sign Up
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
+
+![img_1.png](assets/images/img_1.png)
+
+
+![img_2.png](assets/images/img_2.png)
 
 3. Home Screen
-![img_3.png](img_3.png)
+
+![img_3.png](assets/images/img_3.png)
 
 4. Favorite Anime 
-![img_4.png](img_4.png)
 
-5. Profile 
-![img_5.png](img_5.png)
+![img_4.png](assets/images/img_4.png)
+
+5. Profile
+
+![img_5.png](assets/images/img_5.png)
 
 ## Link Demo Application
-
+https://youtu.be/8gOzXb8fv4Q go check now!
 
 ## 🔥 Firebase Setup (Required)
 
