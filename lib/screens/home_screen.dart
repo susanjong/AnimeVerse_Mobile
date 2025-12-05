@@ -32,11 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      // Near bottom, trigger load more
       final provider = Provider.of<AppStateProvider>(context, listen: false);
-
-      // Only load more if NOT filtering by genre (client-side filter)
-      // Genre filter only works on already-loaded data
       if (provider.selectedGenre == "All") {
         provider.loadMoreAnime();
       }
@@ -44,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildContentArea(AppStateProvider provider, double screenHeight) {
-    // Handle loading state
     if (provider.isLoading) {
       return SizedBox(
         height: screenHeight * 0.4,
@@ -64,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // Handle error state
     if (provider.errorMessage != null) {
       return SizedBox(
         height: screenHeight * 0.4,
@@ -99,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final filteredAnime = provider.getFilteredAnimeForHome();
 
-    // Handle empty state (search/filter tidak menemukan hasil)
     if (filteredAnime.isEmpty) {
       return SizedBox(
         height: screenHeight * 0.4,
@@ -132,7 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // Display anime list
     return AnimeView(animeList: filteredAnime);
   }
 
@@ -247,10 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(height: screenHeight * 0.03),
 
-                  // Content Area - Loading/Error/Empty/Data
                   _buildContentArea(provider, screenHeight),
 
-                  // Loading More Indicator (at bottom)
                   if (provider.isLoadingMore)
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
@@ -266,7 +256,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
-                  // End of list message (only show when no filter active)
                   if (!provider.hasMore &&
                       !provider.isSearchMode &&
                       provider.selectedGenre == "All" &&
@@ -279,7 +268,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
-                  // Genre filter info message
                   if (provider.selectedGenre != "All" &&
                       provider.animeList.isNotEmpty &&
                       !provider.isLoading)
