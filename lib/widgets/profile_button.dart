@@ -5,6 +5,7 @@ class ProfileButton extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
+  final Color? iconColor;
 
   const ProfileButton({
     super.key,
@@ -12,60 +13,105 @@ class ProfileButton extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onTap,
+    this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: screenHeight * 0.005),
+      margin: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.01,
+        vertical: screenWidth * 0.01,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(screenWidth * 0.035),
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.05),
+            Colors.white.withOpacity(0.02),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.15),
+          color: Colors.white.withOpacity(0.1),
           width: 1,
         ),
       ),
-      child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(screenWidth * 0.025),
-          decoration: BoxDecoration(
-            color: Colors.blue.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(screenWidth * 0.02),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          splashColor: Colors.white.withOpacity(0.1),
+          highlightColor: Colors.white.withOpacity(0.05),
+          child: Padding(
+            padding: EdgeInsets.all(screenWidth * 0.04),
+            child: Row(
+              children: [
+                // Icon Container with Gradient
+                Container(
+                  padding: EdgeInsets.all(screenWidth * 0.03),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        (iconColor ?? Colors.blue).withOpacity(0.3),
+                        (iconColor ?? Colors.blue).withOpacity(0.1),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: (iconColor ?? Colors.blue).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: iconColor ?? Colors.blue,
+                    size: screenWidth * 0.06,
+                  ),
+                ),
+
+                SizedBox(width: screenWidth * 0.04),
+
+                // Title and Subtitle
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.042,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.034,
+                          color: Colors.white60,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Arrow Icon
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white.withOpacity(0.4),
+                  size: screenWidth * 0.04,
+                ),
+              ],
+            ),
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: screenWidth * 0.05,
-          ),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: screenWidth * 0.04,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(
-            fontSize: screenWidth * 0.032,
-            color: Colors.white60,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.white60,
-          size: screenWidth * 0.04,
-        ),
-        onTap: onTap,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.04,
-          vertical: screenHeight * 0.005,
         ),
       ),
     );
