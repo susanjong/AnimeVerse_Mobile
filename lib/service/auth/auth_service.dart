@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'user_service.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -9,6 +10,7 @@ class AuthService {
   AuthService._internal();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserService _userService = UserService();
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
@@ -25,10 +27,18 @@ class AuthService {
         password: password,
       );
 
-      // Set display name jika disediakan
+      // Set display name if provided
       if (displayName != null && displayName.isNotEmpty) {
         await credential.user?.updateDisplayName(displayName);
         await credential.user?.reload();
+      }
+
+      // Save user data to Firestore
+      if (credential.user != null) {
+        await _userService.saveUser(
+          firebaseUser: credential.user!,
+          provider: 'email',
+        );
       }
 
       return credential;
@@ -44,10 +54,20 @@ class AuthService {
     required String password,
   }) async {
     try {
-      return await _auth.signInWithEmailAndPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
+
+      // Update user data in Firestore (lastLogin, etc.)
+      if (credential.user != null) {
+        await _userService.saveUser(
+          firebaseUser: credential.user!,
+          provider: 'email',
+        );
+      }
+
+      return credential;
     } on FirebaseAuthException catch (e) {
       throw _handleFirebaseAuthException(e);
     } catch (e) {
@@ -56,8 +76,22 @@ class AuthService {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    final credential = await _performGoogleSignIn();
-    return await _auth.signInWithCredential(credential);
+    try {
+      final credential = await _performGoogleSignIn();
+      final userCredential = await _auth.signInWithCredential(credential);
+
+      // Save user data to Firestore
+      if (userCredential.user != null) {
+        await _userService.saveUser(
+          firebaseUser: userCredential.user!,
+          provider: 'google',
+        );
+      }
+
+      return userCredential;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
@@ -72,7 +106,11 @@ class AuthService {
 
   Future<void> updateDisplayName(String displayName) async {
     await _updateUserProfile(() async {
-      await _requireUser().updateDisplayName(displayName.trim());
+      final user = _requireUser();
+      await user.updateDisplayName(displayName.trim());
+
+      // Update Firestore as well
+      await _userService.updateDisplayName(user.uid, displayName.trim());
     }, 'display name');
   }
 
@@ -107,9 +145,6 @@ class AuthService {
 
   Future<void> signOut() async {
     try {
-      // Sign out dari kedua service
-      // Note: Menggunakan signOut() bukan disconnect() agar user bisa login lagi
-      // tanpa harus memilih akun Google lagi
       await Future.wait([
         _auth.signOut(),
         GoogleSignIn.instance.signOut(),
@@ -181,16 +216,16 @@ class AuthService {
           rethrow;
         }
       } else {
-        throw AuthException('Google Sign-In tidak didukung pada platform ini');
+        throw AuthException('Google Sign-In is not supported on this platform');
       }
 
       if (googleUser == null) {
-        throw AuthException('Google Sign-In dibatalkan oleh user');
+        throw AuthException('Google Sign-In was cancelled by the user');
       }
 
       final googleAuth = googleUser.authentication;
       if (googleAuth.idToken == null) {
-        throw AuthException('Gagal mendapatkan ID token dari Google');
+        throw AuthException('Failed to obtain ID token from Google');
       }
 
       return GoogleAuthProvider.credential(idToken: googleAuth.idToken);
@@ -199,64 +234,49 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       throw _handleFirebaseAuthException(e);
     } on TimeoutException {
-      throw AuthException('Google Sign-In timeout. Silakan coba lagi.');
+      throw AuthException('Google Sign-In timeout. Please try again.');
     } catch (e) {
       if (e is AuthException) rethrow;
-      throw AuthException('Google Sign-In gagal: ${e.toString()}');
+      throw AuthException('Google Sign-In failed: ${e.toString()}');
     }
   }
 
   AuthException _handleFirebaseAuthException(FirebaseAuthException e) {
     switch (e.code) {
-    // Sign Up Errors
       case 'weak-password':
-        return AuthException('Password terlalu lemah. Minimal 6 karakter.');
+        return AuthException('Password is too weak. Minimum 6 characters.');
       case 'email-already-in-use':
         return AuthException(
-          'Email sudah terdaftar. Silakan login atau gunakan email lain.',
+          'Email is already registered. Please login or use another email.',
         );
-
-    // Sign In Errors
       case 'user-not-found':
         return AuthException(
-          'Email tidak terdaftar. Silakan daftar terlebih dahulu.',
+          'Email not registered. Please sign up first.',
         );
       case 'wrong-password':
-        return AuthException('Password salah. Silakan coba lagi.');
+        return AuthException('Incorrect password. Please try again.');
       case 'invalid-credential':
-        return AuthException('Email atau password salah.');
+        return AuthException('Invalid email or password.');
       case 'user-disabled':
         return AuthException(
-          'Akun ini telah dinonaktifkan. Hubungi administrator.',
+          'This account has been disabled. Contact the administrator.',
         );
-
-    // Email Errors
       case 'invalid-email':
-        return AuthException('Format email tidak valid.');
-
-    // Rate Limiting
+        return AuthException('Invalid email format.');
       case 'too-many-requests':
         return AuthException(
-          'Terlalu banyak percobaan. Silakan coba lagi nanti.',
+          'Too many attempts. Please try again later.',
         );
-
-    // Requires Recent Login
       case 'requires-recent-login':
         return AuthException(
-          'Operasi sensitif. Silakan logout dan login kembali.',
+          'Sensitive operation. Please log out and log in again.',
         );
-
-    // Network Errors
       case 'network-request-failed':
         return AuthException(
-          'Tidak ada koneksi internet. Periksa koneksi Anda.',
+          'No internet connection. Check your connection.',
         );
-
-    // Operation Not Allowed
       case 'operation-not-allowed':
-        return AuthException('Operasi tidak diizinkan. Hubungi administrator.');
-
-    // Default
+        return AuthException('Operation not allowed. Contact the administrator.');
       default:
         return AuthException('Error: ${e.message ?? e.code}');
     }
@@ -265,7 +285,7 @@ class AuthService {
   AuthException _handleGoogleSignInException(GoogleSignInException e) {
     switch (e.code) {
       case GoogleSignInExceptionCode.canceled:
-        return AuthException('Google Sign-In dibatalkan oleh user');
+        return AuthException('Google Sign-In cancelled by the user');
       default:
         return AuthException(
           'Google Sign-In error: ${e.description ?? e.code.name}',
