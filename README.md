@@ -8,7 +8,7 @@ NIM: 231401014
 AnimeVerse is a modern Flutter application designed to help users explore anime titles, read detailed synopses, and save their favorite shows.
 This project is currently under development and integrates directly with the Jikan API, with plans to implement a dedicated backend service in future releases.
 
-## 📱 AnimeVerse – Check the Latest Release
+## !Check the Latest Release AnimeVerse app
 
 Welcome to the AnimeVerse repository!
 
