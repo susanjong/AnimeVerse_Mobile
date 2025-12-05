@@ -1,3 +1,7 @@
+### About Me 
+Name: Susan Jong 
+NIM: 231401014
+
 # 📱 AnimeVerse – Discover Anime Anytime, Anywhere
 
 AnimeVerse is a modern Flutter application designed to help users explore anime titles, read detailed synopses, and save their favorite shows.
@@ -79,6 +83,26 @@ lib/
 ├── widgets/
 
 └── main.dart
+
+## Application Screenshoot 
+1. Splash screen
+![img.png](img.png)
+
+2. Sign In dan Sign Up
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+
+3. Home Screen
+![img_3.png](img_3.png)
+
+4. Favorite Anime 
+![img_4.png](img_4.png)
+
+5. Profile 
+![img_5.png](img_5.png)
+
+## Link Demo Application
+
 
 ## 🔥 Firebase Setup (Required)
 
