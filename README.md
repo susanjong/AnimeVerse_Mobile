@@ -32,16 +32,18 @@ State Management: Provider
 
 HTTP Client: http package
 
+Repository for Dart an Flutter packages : https://pub.dev
+
 ## 📦 Installation
 git clone https://github.com/susanjong/anime_verse.git
 
 Do 3 steps in here, run into terminal
 
-cd anime_verse
+`cd anime_verse
 
 flutter pub get
 
-flutter run
+flutter run`
 
 📡 API Integration (Temporary)
 
@@ -126,23 +128,21 @@ Enable Email/Password sign-in method.
 
 Run this in your terminal:
 
-flutter pub add firebase_core
-flutter pub add firebase_auth
+`flutter pub add firebase_core
+flutter pub add firebase_auth`
 
 5️⃣ Install FlutterFire CLI (if not installed)
-dart pub global activate flutterfire_cli
+`dart pub global activate flutterfire_cli`
 
 6️⃣ Configure Firebase Automatically
 
 Run the FlutterFire setup from the root folder of your project:
 
-flutterfire configure
-
+`flutterfire configure`
 
 This command will auto-generate the file:
 
 lib/firebase_options.dart
-
 
 and link your Android app to Firebase.
 
@@ -150,7 +150,7 @@ and link your Android app to Firebase.
 
 Add and copy this to your code:
 
-import 'package:firebase_core/firebase_core.dart';
+`import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
 
@@ -166,27 +166,26 @@ await Firebase.initializeApp(
 
 runApp(const MyApp());
 
-}
+}`
 
 8️⃣ Add Google Services Plugin (Android)
 
-Confirm your android/app/build.gradle contains:
+`Confirm your android/app/build.gradle contains:
 
-apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'`
 
 
 And in android/build.gradle:
 
-classpath 'com.google.gms:google-services:4.4.2'
+`classpath 'com.google.gms:google-services:4.4.2'`
 
 9️⃣ Clean & Run the Project in terminal
 
-flutter clean
+`flutter clean`
 
-flutter pub get
+`flutter pub get`
 
-flutter run
-
+`flutter run`
 
 ## 📄 License – MIT License (Attribution Required)
 
@@ -197,7 +196,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
 in the Software with the following conditions:
 
-Proper credit to the original author (GitHub: `susanjong) is required.`
+Proper credit to the original author (GitHub: susanjong) is required.
 
 Reuploading, redistributing, or claiming this work as your own without attribution is strictly prohibited.
 
