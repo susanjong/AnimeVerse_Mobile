@@ -21,6 +21,9 @@ dependencies:
   shared_preferences: ^2.5.3
   http: ^1.6.0
   cached_network_image: ^3.4.1
+  firebase_auth: ^6.1.2
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -51,3 +54,22 @@ flutter:
            weight: 700
         -  asset: assets/fonts/Urbanist-ExtraBold.ttf
            weight: 800
+
+#App icon configuration
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/app_icon.png"
+  adaptive icon background: "#FFFFFF"
+  adaptive icon foreground: "assets/images/app_icon.png"
+
+#Splash screen configuration
+flutter_native_splash:
+  android: true
+  ios: false
+  web: false
+  color: "#FFFFFF"
+  image: "assets/images/splash_screen_icon.png"
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/splash_screen_icon.png"
