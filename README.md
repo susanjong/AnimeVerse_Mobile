@@ -3,12 +3,12 @@ Name: Susan Jong
 
 NIM: 231401014
 
-# 📱 AnimeVerse – Discover Anime Anytime, Anywhere
+# AnimeVerse – Discover Anime Anytime, Anywhere
 
 AnimeVerse is a modern Flutter application designed to help users explore anime titles, read detailed synopses, and save their favorite shows.
 This project is currently under development and integrates directly with the Jikan API, with plans to implement a dedicated backend service in future releases.
 
-## !Check the Latest Release AnimeVerse app
+## Check the Latest Release AnimeVerse app
 
 Welcome to the AnimeVerse repository!
 
@@ -60,20 +60,16 @@ git clone https://github.com/susanjong/anime_verse.git
 
 Do 3 steps in here, run into terminal
 
-`cd anime_verse
+1. `cd anime_verse`
 
-flutter pub get
+2. `flutter pub get`
 
-flutter run`
+3. `flutter run`
 
 📡 API Integration (Temporary)
 
 AnimeVerse temporarily uses the Jikan REST API as its main data source until the backend service is completed.
-API Reference: https://api.jikan.moe/v4/
-
-Example request:
-
-GET https://api.jikan.moe/v4/anime?q=naruto
+API Reference: https://jikan.moe/
 
 ## 📁 Project Structure
 
@@ -101,7 +97,7 @@ lib/
 
 └── main.dart
 
-## Application Screenshoot 
+## 📱Application Screenshoot 
 1. Splash screen
 
 ![img.png](assets/images/img.png)
@@ -195,31 +191,9 @@ This command will auto-generate the file:
 
 lib/firebase_options.dart
 
-and link your Android app to Firebase.
+after that link your Android app to Firebase.
 
-7️⃣ Initialize Firebase in main.dart
-
-Add and copy this to your code:
-
-`import 'package:firebase_core/firebase_core.dart';
-
-import 'firebase_options.dart';
-
-void main() async {
-
-WidgetsFlutterBinding.ensureInitialized();
-
-await Firebase.initializeApp(
-
-options: DefaultFirebaseOptions.currentPlatform,
-
-);
-
-runApp(const MyApp());
-
-}`
-
-8️⃣ Add Google Services Plugin (Android)
+7️⃣ Add Google Services Plugin (Android)
 
 `Confirm your android/app/build.gradle contains:
 
@@ -230,15 +204,15 @@ And in android/build.gradle:
 
 `classpath 'com.google.gms:google-services:4.4.2'`
 
-9️⃣ Clean & Run the Project in terminal
+8️⃣ Clean & Run the Project in terminal
 
-`flutter clean`
+1. `flutter clean`
 
-`flutter pub get`
+2. `flutter pub get`
 
-`flutter run`
+3. `flutter run`
 
-## 📄 License – MIT License (Attribution Required)
+## 📄 License – MIT License 
 
 Copyright (c) 2025 Susaan Jong
 GitHub: https://github.com/susanjong
